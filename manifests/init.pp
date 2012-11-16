@@ -26,5 +26,15 @@
 #
 class nginx {
 
+  case $::operatingsystem {
+    ubuntu: {
+      $pkg = 'nginx'
+    }
+    default: {
+      fail("Module ${module_name} is not supported on ${::operatingsystem}")
+    }
+  }
+
+  package { $pkg: ensure => present }
 
 }
