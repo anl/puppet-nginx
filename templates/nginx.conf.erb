@@ -13,7 +13,7 @@ http {
 	# Basic Settings
 	##
 
-	index <% if php == 'enable' %>index.php <% end %>index.html index.htm
+	index <% if php == 'present' %>index.php <% end %>index.html index.htm
 
 	sendfile on;
 	tcp_nopush on;
