@@ -35,10 +35,19 @@ class nginx (
     }
   }
 
-  # Install base web server
+  # Install base web server and configuration
+
   package { $pkg: ensure => present }
 
-  # Install and configure PHP:
+  file { '/etc/nginx/nginx.conf':
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => template('nginx/nginx.conf.erb'),
+    require => Package[$pkg],
+  }
+
+  # Install and configure PHP as appropriate:
   package { $php_pkg:
     ensure => $php,
   }
