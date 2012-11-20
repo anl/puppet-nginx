@@ -6,11 +6,8 @@
 #
 # === Parameters
 #
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
+# [*php*]
+#   Ensure if php support is present or absent.
 #
 # === Examples
 #
@@ -24,17 +21,25 @@
 #
 # Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
 #
-class nginx {
+class nginx (
+  $php = 'absent'
+) {
 
   case $::operatingsystem {
     ubuntu: {
       $pkg = 'nginx'
+      $php_pkg = 'php5-fpm'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
     }
   }
 
+  # Install base web server
   package { $pkg: ensure => present }
 
+  # Install and configure PHP:
+  package { $php_pkg:
+    ensure => $php,
+  }
 }
