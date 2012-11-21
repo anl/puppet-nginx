@@ -51,4 +51,9 @@ class nginx (
   package { $php_pkg:
     ensure => $php,
   }
+
+  # Manage service:
+  service { 'nginx':
+    enable => true,
+  }
 }
