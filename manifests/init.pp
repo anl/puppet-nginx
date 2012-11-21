@@ -9,6 +9,9 @@
 # [*php*]
 #   Ensure if php support is present or absent.
 #
+# [*server_name*]
+#   server_name value for Nginx configuration; set to the fqdn fact by default.
+#
 # === Examples
 #
 #  include nginx
