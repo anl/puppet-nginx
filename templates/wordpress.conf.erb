@@ -6,7 +6,8 @@ upstream php {
  
 server {
         ## Your website name goes here.
-        server_name domain.tld;
+        server_name <%= server_name %>;
+
         ## Your only path reference.
         root /var/www/wordpress;
  

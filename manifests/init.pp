@@ -22,7 +22,8 @@
 # Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
 #
 class nginx (
-  $php = 'absent'
+  $php = 'absent',
+  $server_name = $::fqdn
 ) {
 
   case $::operatingsystem {
