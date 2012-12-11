@@ -78,6 +78,7 @@ define nginx::sites::django(
   file { "/etc/nginx/sites-enabled/${server_name}":
     ensure  => $symlink_state,
     target  => "/etc/nginx/sites-available/${server_name}",
+    notify  => Service['nginx'],
     require => File["/etc/nginx/sites-available/${server_name}"],
   }
 
