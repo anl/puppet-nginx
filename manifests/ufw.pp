@@ -38,8 +38,8 @@ class nginx::ufw (
 
   ufw::allow { 'nginx':
     ensure => $ensure,
-    from => $from,
-    ip => $ip,
-    port => $port,
+    from   => $from,
+    ip     => $ip,
+    port   => $port,
   }
 }
