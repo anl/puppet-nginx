@@ -3,7 +3,7 @@ version '0.0.1'
 source 'https://github.com/anl/puppet-nginx.git'
 author 'anl'
 license 'Apache License, Version 2.0'
-summary 'nginx module
+summary 'nginx module'
 description 'Install and configure Nginx software and websites'
 project_page 'https://github.com/anl/puppet-nginx'
 
