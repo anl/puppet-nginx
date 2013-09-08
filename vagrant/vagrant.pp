@@ -1,2 +1,4 @@
 # Include this module
-include 'nginx'
+class { 'nginx':
+  php => 'present',
+}
