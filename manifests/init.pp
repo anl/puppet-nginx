@@ -51,6 +51,11 @@ class nginx (
     require => Package[$pkg],
   }
 
+  file { '/etc/nginx/sites-enabled/default':
+    ensure  => 'absent',
+    require => Package[$pkg],
+  }
+  
   # Install and configure PHP as appropriate:
   package { $php_pkg:
     ensure => $php,
