@@ -55,7 +55,7 @@ class nginx (
     ensure  => 'absent',
     require => Package[$pkg],
   }
-  
+
   # Install and configure PHP as appropriate:
   package { $php_pkg:
     ensure => $php,
