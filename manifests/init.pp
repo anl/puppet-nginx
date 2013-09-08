@@ -6,11 +6,17 @@
 #
 # === Parameters
 #
+# [*nginx_service*]
+#   Boolean - enable nginx service?
+#
 # [*php*]
 #   Ensure if php support is present or absent.
 #
 # [*php_listen*]
 #   Where php-fpm should listen - 'port' or 'socket'
+#
+# [*php_service*]
+#   Boolean - enable php5-fpm service?
 #
 # [*server_name*]
 #   server_name value for Nginx configuration; set to the fqdn fact by default.
@@ -28,8 +34,10 @@
 # Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
 #
 class nginx (
+  $nginx_service = true,
   $php = 'absent',
   $php_listen = 'port',
+  $php_service = true,
   $server_name = $::fqdn
 ) {
 
@@ -39,8 +47,10 @@ class nginx (
 
   case $::operatingsystem {
     ubuntu: {
+      $nginx_svc_name = 'nginx'
       $pkg = 'nginx'
       $php_pkg = 'php5-fpm'
+      $php_svc_name = 'php5-fpm'
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
@@ -65,7 +75,11 @@ class nginx (
       mode    => '0444',
       content => template('nginx/www.conf.erb'),
       require => Package[$php_pkg],
+      notify  => Service[$php_svc_name],
     }
+
+    ensure_resource('service', $php_svc_name, { 'enable' => $php_service })
+
   }
 
   file { '/etc/nginx/nginx.conf':
@@ -74,15 +88,15 @@ class nginx (
     mode    => '0444',
     content => template('nginx/nginx.conf.erb'),
     require => Package[$pkg],
+    notify  => Service[$nginx_svc_name]
   }
 
   file { '/etc/nginx/sites-enabled/default':
     ensure  => 'absent',
     require => Package[$pkg],
+    notify  => Service[$nginx_svc_name],
   }
 
-  # Manage service:
-  service { 'nginx':
-    enable => true,
-  }
+  # Manage Nginx service?:
+  ensure_resource('service', $nginx_svc_name, { 'enable' => $nginx_service })
 }
