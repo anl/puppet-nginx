@@ -29,6 +29,10 @@ class nginx (
   $server_name = $::fqdn
 ) {
 
+  # Validate parameters
+  validate_re($php, [ 'absent', 'present' ])
+  validate_re($server_name, '(?=^.{1,254}$)(^(?:(?!\d|-)[a-zA-Z0-9\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)') # ref. http://blog.gnukai.com/2010/06/fqdn-regular-expression/
+
   case $::operatingsystem {
     ubuntu: {
       $pkg = 'nginx'
@@ -39,9 +43,12 @@ class nginx (
     }
   }
 
-  # Install base web server and configuration
+  # Install packages and configuration
+  ensure_packages([$pkg])
 
-  package { $pkg: ensure => present }
+  if $php == 'present' {
+    ensure_packages([$php_pkg])
+  }
 
   file { '/etc/nginx/nginx.conf':
     owner   => 'root',
@@ -54,11 +61,6 @@ class nginx (
   file { '/etc/nginx/sites-enabled/default':
     ensure  => 'absent',
     require => Package[$pkg],
-  }
-
-  # Install and configure PHP as appropriate:
-  package { $php_pkg:
-    ensure => $php,
   }
 
   # Manage service:
