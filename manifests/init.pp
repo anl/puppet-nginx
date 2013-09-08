@@ -41,9 +41,11 @@ class nginx (
   $server_name = $::fqdn
 ) {
 
+  validate_bool($nginx_service, $php_service)
+  validate_string($server_name)
+
   validate_re($php, [ 'absent', 'present' ])
   validate_re($php_listen, [ 'port', 'socket' ])
-  validate_re($server_name, '(?=^.{1,254}$)(^(?:(?!\d|-)[a-zA-Z0-9\-]{1,63}(?<!-)\.?)+(?:[a-zA-Z]{2,})$)') # ref. http://blog.gnukai.com/2010/06/fqdn-regular-expression/
 
   case $::operatingsystem {
     ubuntu: {
