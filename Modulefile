@@ -1,11 +1,11 @@
 name    'sbri-nginx'
 version '0.0.1'
-source 'UNKNOWN'
-author 'sbri'
+source 'https://github.com/anl/puppet-nginx.git'
+author 'anl'
 license 'Apache License, Version 2.0'
-summary 'UNKNOWN'
-description 'UNKNOWN'
-project_page 'UNKNOWN'
+summary 'nginx module
+description 'Install and configure Nginx software and websites'
+project_page 'https://github.com/anl/puppet-nginx'
 
 ## Add dependencies, if any:
 # dependency 'username/name', '>= 1.2.0'
