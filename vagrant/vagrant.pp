@@ -7,3 +7,7 @@ class { 'nginx':
 nginx::site::django { 'www.example.com':
   root => '/srv/www/www.example.com',
 }
+
+nginx::site::php { 'www.example.org':
+  root => '/srv/www/www.example.org',
+}

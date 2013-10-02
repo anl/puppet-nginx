@@ -9,7 +9,7 @@ server {
         server_name <%= server_name %>;
 
         ## Your only path reference.
-        root /var/www/wordpress;
+        root <%= root %>;
  
         location = /favicon.ico {
                 log_not_found off;
