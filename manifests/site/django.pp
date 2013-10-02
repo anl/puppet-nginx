@@ -1,4 +1,4 @@
-# == Define: nginx::sites::django
+# == Define: nginx::site::django
 #
 # Configure nginx for back-proxy to a Django/Gunicorn site.
 #
@@ -31,7 +31,7 @@
 #
 # === Examples
 #
-# nginx::sites::django { 'www.example.org':
+# nginx::site::django { 'www.example.org':
 #   root => '/opt/django-sites/example.org',
 # }
 #
@@ -43,7 +43,7 @@
 #
 # Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
 #
-define nginx::sites::django(
+define nginx::site::django(
   $activate = true,
   $addl_media = {},
   $error_codes = [ 500, 502, 503, 504 ],
