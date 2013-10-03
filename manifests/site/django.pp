@@ -67,6 +67,7 @@ define nginx::site::django(
     mode    => '0444',
     content => template('nginx/gunicorn.conf.erb'),
     notify  => Service['nginx'],
+    require => Package['nginx'],
   }
 
   if $activate == true {

@@ -50,6 +50,7 @@ define nginx::site::php(
     mode    => '0444',
     content => template('nginx/php.conf.erb'),
     notify  => Service['nginx'],
+    require => Package['nginx'],
   }
 
   if $activate == true {

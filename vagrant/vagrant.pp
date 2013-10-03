@@ -4,10 +4,15 @@ class { 'nginx':
   php_listen => 'socket',
 }
 
-nginx::site::django { 'www.example.com':
-  root => '/srv/www/www.example.com',
-}
-
-nginx::site::php { 'www.example.org':
-  root => '/srv/www/www.example.org',
+class { 'nginx::sites':
+  django_sites => {
+    'www.example.com' => {
+      root => '/srv/www/www.example.com'
+    }
+  },
+  php_sites    => {
+    'www.example.org' => {
+      root => '/srv/www/www.example.org'
+    }
+  }
 }
