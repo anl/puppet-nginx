@@ -80,6 +80,15 @@ class nginx (
       notify  => Service[$php_svc_name],
     }
 
+    file { '/etc/php5/fpm/php.ini':
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0444',
+      source  => 'puppet:///modules/nginx/php.ini',
+      require => Package[$php_pkg],
+      notify  => Service[$php_svc_name],
+    }
+
     ensure_resource('service', $php_svc_name, { 'enable' => $php_service })
 
   }
