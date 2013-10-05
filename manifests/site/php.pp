@@ -47,6 +47,14 @@ define nginx::site::php(
   $site_config = 'present'
   ){
 
+  # Construct listen configuration:
+  if $nginx::php_listen == 'socket' {
+    $listen_prefix = 'unix:'
+  } else {
+    $listen_prefix = ''
+  }
+  $upstream_path = "${listen_prefix}${nginx::php_listen_path}"
+
   if $root == undef {
     fail('Nginx site document root must be specified.')
   }
