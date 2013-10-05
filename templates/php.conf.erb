@@ -21,7 +21,14 @@ server {
                 log_not_found off;
                 access_log off;
         }
- 
+
+<% auth_basic.keys.each do |dir| -%>
+        location = <%= dir %> {
+                auth_basic "<%= auth_basic[dir]['realm'] %>";
+                auth_basic_user_file <%= auth_basic[dir]['passwd'] %>;
+	}
+
+        <% end -%>
         location / {
                 # This is cool because no php is touched for static content. 
                 # include the "?$args" part so non-default permalinks doesn't break when using query string

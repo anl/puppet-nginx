@@ -12,7 +12,13 @@ class { 'nginx::sites':
   },
   php_sites    => {
     'www.example.org' => {
-      root => '/srv/www/www.example.org'
+      auth_basic => {
+        '/protected' => {
+          'passwd' => '/srv/www/www.example.org/passwd',
+          'realm'  => 'Password, please',
+        }
+      },
+      root       => '/srv/www/www.example.org/htdocs'
     }
   }
 }

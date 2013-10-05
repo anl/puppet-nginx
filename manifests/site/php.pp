@@ -10,6 +10,15 @@
 # [*activate*]
 #   Set to "true" or "link" to place a symlink in /etc/nginx/sites-available.
 #
+# [*auth_basic*]
+#   Hash to configure basic authentication for an arbitrary collection of
+#   directories.  Keys are locations, values are a hash containing the
+#   following keys:
+#   - passwd: Path to password file
+#   - realm: String defining "protection space" (RFC 1945, 2617); *Double
+#            quotes must be escaped!*
+#   Default: {}
+#
 # [*root*]
 #   Document root for requests.
 #
@@ -33,6 +42,7 @@
 #
 define nginx::site::php(
   $activate = true,
+  $auth_basic = {},
   $root = undef,
   $site_config = 'present'
   ){
