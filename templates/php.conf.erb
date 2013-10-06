@@ -9,6 +9,10 @@ server {
 
         ## Your only path reference.
         root <%= root %>;
+
+	## Logging
+        access_log <%= logdir %>/access.log;
+        error_log <%= logdir %>/error.log;
  
         location = /favicon.ico {
                 log_not_found off;

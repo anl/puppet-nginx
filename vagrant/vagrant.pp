@@ -18,6 +18,7 @@ class { 'nginx::sites':
           'realm'  => 'Password, please',
         }
       },
+      logdir     => '/srv/logs/www.example.org',
       root       => '/srv/www/www.example.org/htdocs'
     }
   }

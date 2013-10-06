@@ -19,6 +19,9 @@
 #            quotes must be escaped!*
 #   Default: {}
 #
+# [*logdir*]
+#   Path to vhost log directory.
+#
 # [*root*]
 #   Document root for requests.
 #
@@ -41,11 +44,15 @@
 # Copyright 2013 Andrew Leonard
 #
 define nginx::site::php(
+  $logdir,
+  $root,
   $activate = true,
   $auth_basic = {},
-  $root = undef,
   $site_config = 'present'
   ){
+
+  validate_absolute_path($logdir)
+  validate_absolute_path($root)
 
   # Construct listen configuration:
   if $nginx::php_listen == 'socket' {
@@ -54,10 +61,6 @@ define nginx::site::php(
     $listen_prefix = ''
   }
   $upstream_path = "${listen_prefix}${nginx::php_listen_path}"
-
-  if $root == undef {
-    fail('Nginx site document root must be specified.')
-  }
 
   $server_name = $name
 
