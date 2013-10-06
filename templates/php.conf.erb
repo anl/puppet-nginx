@@ -1,52 +1,52 @@
 # Upstream to abstract backend connection(s) for php
 upstream php {
-        server <%= @upstream_path %>;
+  server <%= @upstream_path %>;
 }
  
 server {
-        ## Your website name goes here.
-        server_name <%= server_name %>;
+  ## Your website name goes here.
+  server_name <%= server_name %>;
 
-        ## Your only path reference.
-        root <%= root %>;
+  ## Your only path reference.
+  root <%= root %>;
 
-	## Logging
-        access_log <%= logdir %>/access.log;
-        error_log <%= logdir %>/error.log;
+  ## Logging
+  access_log <%= logdir %>/access.log;
+  error_log <%= logdir %>/error.log;
  
-        location = /favicon.ico {
-                log_not_found off;
-                access_log off;
-        }
+  location = /favicon.ico {
+    log_not_found off;
+    access_log off;
+  }
  
-        location = /robots.txt {
-                allow all;
-                log_not_found off;
-                access_log off;
-        }
+  location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+  }
 
 <% auth_basic.keys.each do |dir| -%>
-        location = <%= dir %> {
-                auth_basic "<%= auth_basic[dir]['realm'] %>";
-                auth_basic_user_file <%= auth_basic[dir]['passwd'] %>;
-	}
+  location = <%= dir %> {
+    auth_basic "<%= auth_basic[dir]['realm'] %>";
+    auth_basic_user_file <%= auth_basic[dir]['passwd'] %>;
+  }
 
-        <% end -%>
-        location / {
-                # This is cool because no php is touched for static content. 
-                # include the "?$args" part so non-default permalinks doesn't break when using query string
-                try_files $uri $uri/ /index.php?$args;
-        }
+<% end -%>
+  location / {
+    # This is cool because no php is touched for static content. 
+    # include the "?$args" part so non-default permalinks doesn't break when using query string
+    try_files $uri $uri/ /index.php?$args;
+  }
  
-        location ~ \.php$ {
-                #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-                include fastcgi_params;
-                fastcgi_intercept_errors on;
-                fastcgi_pass php;
-        }
+  location ~ \.php$ {
+    #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+    include fastcgi_params;
+    fastcgi_intercept_errors on;
+    fastcgi_pass php;
+  }
  
-        location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
-                expires max;
-                log_not_found off;
-        }
+  location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+    expires max;
+    log_not_found off;
+  }
 }
