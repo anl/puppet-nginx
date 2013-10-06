@@ -25,13 +25,6 @@ server {
     access_log off;
   }
 
-<% auth_basic.keys.each do |dir| -%>
-  location = <%= dir %> {
-    auth_basic "<%= auth_basic[dir]['realm'] %>";
-    auth_basic_user_file <%= auth_basic[dir]['passwd'] %>;
-  }
-
-<% end -%>
   location / {
     # This is cool because no php is touched for static content. 
     # include the "?$args" part so non-default permalinks doesn't break when using query string
@@ -49,4 +42,23 @@ server {
     expires max;
     log_not_found off;
   }
+<% auth_basic.keys.each do |dir| -%>
+
+  location = <%= dir %> {
+    auth_basic "<%= auth_basic[dir]['realm'] %>";
+    auth_basic_user_file <%= auth_basic[dir]['passwd'] %>;
+
+    location ~ \.php$ {
+      #NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
+      include fastcgi_params;
+      fastcgi_intercept_errors on;
+      fastcgi_pass php;
+    }
+ 
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico)$ {
+      expires max;
+      log_not_found off;
+    }
+  }
+<% end -%>
 }
