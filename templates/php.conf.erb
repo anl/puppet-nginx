@@ -44,7 +44,7 @@ server {
   }
 <% auth_basic.keys.each do |dir| -%>
 
-  location = <%= dir %> {
+  location <%= dir %> {
     auth_basic "<%= auth_basic[dir]['realm'] %>";
     auth_basic_user_file <%= auth_basic[dir]['passwd'] %>;
 
