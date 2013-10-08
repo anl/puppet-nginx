@@ -11,9 +11,10 @@ server {
   root <%= root %>;
 
   ## Address/port to listen on
-  listen *:<%= @port %>
 <% if @ipv6 -%>
-  listen [::]:<%= @port %>
+  listen [::]:<%= @port %> ipv6only=off;
+<% else -%>
+  listen *:<%= @port %>;
 <% end -%>
 
   ## Logging
