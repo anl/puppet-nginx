@@ -10,6 +10,12 @@ server {
   ## Your only path reference.
   root <%= root %>;
 
+  ## Address/port to listen on
+  listen *:<%= @port %>
+<% if @ipv6 -%>
+  listen [::]:<%= @port %>
+<% end -%>
+
   ## Logging
   access_log <%= logdir %>/access.log;
   error_log <%= logdir %>/error.log;

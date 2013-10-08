@@ -19,8 +19,14 @@
 #            quotes must be escaped!*
 #   Default: {}
 #
+# [*ipv6*]
+#   Boolean indicating whether IPv6 should be enabled.  Default: false
+#
 # [*logdir*]
 #   Path to vhost log directory.
+#
+# [*port*]
+#   Port to listen on.  Default: 80
 #
 # [*root*]
 #   Document root for requests.
@@ -48,11 +54,14 @@ define nginx::site::php(
   $root,
   $activate = true,
   $auth_basic = {},
+  $ipv6 = false,
+  $port = 80,
   $site_config = 'present'
   ){
 
   validate_absolute_path($logdir)
   validate_absolute_path($root)
+  validate_bool($ipv6)
 
   # Construct listen configuration:
   if $nginx::php_listen == 'socket' {
