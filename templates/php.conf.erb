@@ -5,7 +5,7 @@ upstream php {
  
 server {
   ## Your website name goes here.
-  server_name <%= server_name %>;
+  server_name <%= server_name %><% @additional_names.each do |name| %> <%= name %><% end %>;
 
   ## Your only path reference.
   root <%= root %>;

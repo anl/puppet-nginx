@@ -10,6 +10,9 @@
 # [*activate*]
 #   Set to "true" or "link" to place a symlink in /etc/nginx/sites-available.
 #
+# [*additional_names*]
+#   Array of additional server_name values for vhost. Default: []
+#
 # [*auth_basic*]
 #   Hash to configure basic authentication for an arbitrary collection of
 #   directories.  Keys are locations, values are a hash containing the
@@ -53,6 +56,7 @@ define nginx::site::php(
   $logdir,
   $root,
   $activate = true,
+  $additional_names = [],
   $auth_basic = {},
   $ipv6 = false,
   $port = 80,
@@ -61,6 +65,7 @@ define nginx::site::php(
 
   validate_absolute_path($logdir)
   validate_absolute_path($root)
+  validate_array($additional_names)
   validate_bool($ipv6)
 
   # Construct listen configuration:

@@ -12,15 +12,16 @@ class { 'nginx::sites':
   },
   php_sites    => {
     'www.example.org' => {
-      auth_basic => {
+      additional_names => [ 'www2.example.org', 'www3.example.org' ],
+      auth_basic       => {
         '/protected' => {
           'passwd' => '/srv/www/www.example.org/passwd',
           'realm'  => 'Password, please',
         }
       },
-      ipv6       => true,
-      logdir     => '/srv/logs/www.example.org',
-      root       => '/srv/www/www.example.org/htdocs'
+      ipv6             => true,
+      logdir           => '/srv/logs/www.example.org',
+      root             => '/srv/www/www.example.org/htdocs'
     }
   }
 }
