@@ -12,6 +12,19 @@
 # [*php*]
 #   Ensure if php support is present or absent.
 #
+# [*php_apc*]
+#   Install Alternative PHP Cache with PHP?  Default: true.
+#
+# [*php_apc_shm_size*]
+#   Alternative PHP Cache shared memory segment size; format is an integer
+#   followed by 'M' for megabytes.  Default: 32M
+#
+# [*php_gd*]
+#   Install PHP GD with PHP?  Default: true.
+#
+# [*php_suhosin*]
+#   Install PHP Suhosin security patch with PHP?  Default: true.
+#
 # [*php_listen*]
 #   Where php-fpm should listen - 'port' or 'socket'
 #
@@ -38,14 +51,19 @@ class nginx (
   $php = 'absent',
   $php_listen = 'port',
   $php_service = true,
+  $php_apc = true,
+  $php_apc_shm_size = '32M',
+  $php_gd = true,
+  $php_suhosin = true,
   $server_name = $::fqdn
 ) {
 
-  validate_bool($nginx_service, $php_service)
+  validate_bool($nginx_service, $php_apc, $php_gd, $php_suhosin, $php_service)
   validate_string($server_name)
 
   validate_re($php, [ 'absent', 'present' ])
   validate_re($php_listen, [ 'port', 'socket' ])
+  validate_re($php_apc_shm_size, '^\d+M$')
 
   case $::operatingsystem {
     ubuntu: {
@@ -53,6 +71,11 @@ class nginx (
       $pkg = 'nginx'
       $php_pkg = 'php5-fpm'
       $php_svc_name = 'php5-fpm'
+
+      $apc_pkg = 'php-apc'
+      $gd_pkg = 'php5-gd'
+      $suhosin_pkg = 'php5-suhosin'
+
     }
     default: {
       fail("Module ${module_name} is not supported on ${::operatingsystem}")
@@ -64,6 +87,26 @@ class nginx (
 
   if $php == 'present' {
     ensure_packages([$php_pkg])
+
+    if $php_apc {
+      ensure_packages([$apc_pkg])
+
+      file { '/etc/php5/conf.d/apc.ini':
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        content => template('nginx/apc.ini.erb'),
+        require => Package[$apc_pkg],
+      }
+    }
+
+    if $php_gd {
+      ensure_packages([$gd_pkg])
+    }
+
+    if $php_suhosin {
+      ensure_packages([$suhosin_pkg])
+    }
 
     if $php_listen == 'port' {
       $php_listen_path = '127.0.0.1:9000'
