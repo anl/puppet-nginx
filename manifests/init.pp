@@ -97,6 +97,7 @@ class nginx (
         mode    => '0444',
         content => template('nginx/apc.ini.erb'),
         require => Package[$apc_pkg],
+        notify  => Service[$php_svc_name],
       }
     }
 
