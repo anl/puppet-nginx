@@ -21,11 +21,6 @@ server {
   access_log <%= logdir %>/access.log;
   error_log <%= logdir %>/error.log;
  
-  location = /favicon.ico {
-    log_not_found off;
-    access_log off;
-  }
- 
   location = /robots.txt {
     allow all;
     log_not_found off;
