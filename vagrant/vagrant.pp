@@ -22,6 +22,11 @@ class { 'nginx::sites':
       ipv6             => true,
       logdir           => '/srv/logs/www.example.org',
       root             => '/srv/www/www.example.org/htdocs'
+    },
+    'www.example.net' => {
+      ipv6   => true,
+      logdir => '/srv/logs/www.example.net',
+      root   => '/srv/www/www.example.net/htdocs'
     }
   }
 }
