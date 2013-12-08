@@ -1,5 +1,6 @@
 # Include this module
 class { 'nginx':
+  ipv6       => true,
   php        => 'present',
   php_listen => 'socket',
 }

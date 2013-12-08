@@ -6,6 +6,11 @@
 #
 # === Parameters
 #
+# [*ipv6*]
+#   Boolean indicating whether IPv6 should be enabled server-wide;
+#   IPv6 must be enabled or not for each given "server" (vhost).
+#   Default: false
+#
 # [*nginx_service*]
 #   Boolean - enable nginx service?
 #
@@ -31,6 +36,9 @@
 # [*php_service*]
 #   Boolean - enable php5-fpm service?
 #
+# [*port*]
+#   Port to listen on.  Default: 80
+#
 # [*server_name*]
 #   server_name value for Nginx configuration; set to the fqdn fact by default.
 #
@@ -47,6 +55,7 @@
 # Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
 #
 class nginx (
+  $ipv6 = false,
   $nginx_service = true,
   $php = 'absent',
   $php_listen = 'port',
@@ -55,9 +64,11 @@ class nginx (
   $php_apc_shm_size = '32M',
   $php_gd = true,
   $php_suhosin = true,
+  $port = 80,
   $server_name = $::fqdn
 ) {
 
+  validate_bool($ipv6)
   validate_bool($nginx_service, $php_apc, $php_gd, $php_suhosin, $php_service)
   validate_string($server_name)
 

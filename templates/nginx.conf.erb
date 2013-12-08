@@ -72,8 +72,20 @@ http {
 
 	include /etc/nginx/conf.d/*.conf;
 	include /etc/nginx/sites-enabled/*;
-}
 
+	# Default HTTP server, primarily exists to set listen options:
+        server {
+<% if @ipv6 -%>
+                listen [::]:<%= @port %> ipv6only=off;
+<% else -%>
+                listen *:<%= @port %>;
+<% end -%>
+                server_name _; # invalid value, never triggers on real hostname
+                access_log /var/log/nginx/access.log;
+                server_name_in_redirect off;
+	        root /usr/share/nginx/www;
+        }
+} 
 
 #mail {
 #	# See sample authentication script at:

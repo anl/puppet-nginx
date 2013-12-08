@@ -23,7 +23,8 @@
 #   Default: {}
 #
 # [*ipv6*]
-#   Boolean indicating whether IPv6 should be enabled.  Default: false
+#   Boolean indicating whether IPv6 should be enabled for a given
+#   vhost; see also $ipv6 in init.pp.  Default: false
 #
 # [*logdir*]
 #   Path to vhost log directory.

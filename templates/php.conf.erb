@@ -7,7 +7,7 @@ server {
 
   ## Address/port to listen on
 <% if @ipv6 -%>
-  listen [::]:<%= @port %> ipv6only=off;
+  listen [::]:<%= @port %>;
 <% else -%>
   listen *:<%= @port %>;
 <% end -%>
