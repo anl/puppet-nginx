@@ -68,14 +68,6 @@ define nginx::site::php(
   validate_array($additional_names)
   validate_bool($ipv6)
 
-  # Construct listen configuration:
-  if $nginx::php_listen == 'socket' {
-    $listen_prefix = 'unix:'
-  } else {
-    $listen_prefix = ''
-  }
-  $upstream_path = "${listen_prefix}${nginx::php_listen_path}"
-
   $server_name = $name
 
   file { "/etc/nginx/sites-available/${server_name}":

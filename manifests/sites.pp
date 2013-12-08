@@ -31,4 +31,25 @@ class nginx::sites($django_sites = {}, $php_sites = {}) {
   create_resources(nginx::site::django, $django_sites)
 
   create_resources(nginx::site::php, $php_sites)
+
+  # Construct listen configuration:
+  if $nginx::php_listen == 'socket' {
+    $listen_prefix = 'unix:'
+  } else {
+    $listen_prefix = ''
+  }
+  $upstream_path = "${listen_prefix}${nginx::php_listen_path}"
+
+  $size = size(keys($php_sites))
+
+  if size(keys($php_sites)) > 0 {
+    file { '/etc/nginx/conf.d/php-fpm.conf':
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0400',
+      content => template('nginx/php-fpm.conf.erb'),
+      notify  => Service['nginx'],
+    }
+  }
+
 }
