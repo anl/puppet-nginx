@@ -49,6 +49,7 @@ class nginx::sites($django_sites = {}, $php_sites = {}) {
       mode    => '0400',
       content => template('nginx/php-fpm.conf.erb'),
       notify  => Service['nginx'],
+      require => Package[$::nginx::pkg],
     }
   }
 
