@@ -27,6 +27,9 @@
 # [*php_gd*]
 #   Install PHP GD with PHP?  Default: true.
 #
+# [*php_mysql*]
+#   Install PHP MySQL drivers ("mysql" and "mysqli")?  Default: true.
+#
 # [*php_suhosin*]
 #   Install PHP Suhosin security patch with PHP?  Default: true.
 #
@@ -63,6 +66,7 @@ class nginx (
   $php_apc = true,
   $php_apc_shm_size = '32M',
   $php_gd = true,
+  $php_mysql = true,
   $php_suhosin = true,
   $port = 80,
   $server_name = $::fqdn
@@ -85,6 +89,7 @@ class nginx (
 
       $apc_pkg = 'php-apc'
       $gd_pkg = 'php5-gd'
+      $mysql_pkg = 'php5-mysql'
       $suhosin_pkg = 'php5-suhosin'
 
     }
@@ -114,6 +119,10 @@ class nginx (
 
     if $php_gd {
       ensure_packages([$gd_pkg])
+    }
+
+    if $php_mysql {
+      ensure_packages([$mysql_pkg])
     }
 
     if $php_suhosin {
