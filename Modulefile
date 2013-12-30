@@ -1,5 +1,5 @@
 name    'sbri-nginx'
-version '0.2.0'
+version '0.3.0'
 source 'https://github.com/anl/puppet-nginx.git'
 author 'anl'
 license 'Apache License, Version 2.0'
