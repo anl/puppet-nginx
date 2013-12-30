@@ -1,4 +1,4 @@
-name    'sbri-nginx'
+name    'anl-nginx'
 version '0.3.0'
 source 'https://github.com/anl/puppet-nginx.git'
 author 'anl'
