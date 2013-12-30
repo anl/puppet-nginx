@@ -13,6 +13,10 @@
 # [*php_sites*]
 #   Hash describing PHP sites to create.  See nginx::site::php for hash keys.
 #
+# [*static_sites*]
+#   Hash describing static sites to create.  See nginx::site::static for hash
+#   keys.
+#
 # === Examples
 #
 # include nginx::sites
@@ -26,11 +30,17 @@
 # Copyright 2012 Andrew Leonard, Seattle Biomedical Research Institute
 # Copyright 2013 Andrew Leonard
 #
-class nginx::sites($django_sites = {}, $php_sites = {}) {
+class nginx::sites(
+  $django_sites = {},
+  $php_sites = {},
+  $static_sites = {}
+  ) {
 
   create_resources(nginx::site::django, $django_sites)
 
   create_resources(nginx::site::php, $php_sites)
+
+  create_resources(nginx::site::static, $static_sites)
 
   # Construct listen configuration:
   if $nginx::php_listen == 'socket' {
