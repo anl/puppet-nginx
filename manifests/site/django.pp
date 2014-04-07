@@ -48,32 +48,36 @@ define nginx::site::django(
   $addl_media = {},
   $error_codes = [ 500, 502, 503, 504 ],
   $error_page = false,
+  $logdir = '',
   $proxy_host = 'localhost',
   $proxy_port = 8000,
-  $root = undef,
+  $root = '',
   $site_config = 'present'
   ){
 
-  if $root == undef {
-    fail('Nginx site document root must be specified.')
+  if $activate == true {
+    $symlink_state = 'link'
+    $site_config_state = 'present'
+  } elsif $activate == false {
+    $symlink_state = 'absent'
+    $site_config_state = $site_config
+  }
+
+  if $site_config_state == 'present' {
+    validate_absolute_path($logdir)
+    validate_absolute_path($root)
   }
 
   $server_name = $name
 
   file { "/etc/nginx/sites-available/${server_name}":
-    ensure  => $site_config,
+    ensure  => $site_config_state,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
     content => template('nginx/gunicorn.conf.erb'),
     notify  => Service['nginx'],
     require => Package['nginx'],
-  }
-
-  if $activate == true {
-    $symlink_state = 'link'
-  } else {
-    $symlink_state = $activate
   }
 
   file { "/etc/nginx/sites-enabled/${server_name}":

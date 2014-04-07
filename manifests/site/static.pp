@@ -50,37 +50,43 @@
 # Copyright 2013 Andrew Leonard
 #
 define nginx::site::static(
-  $logdir,
-  $root,
   $activate = true,
   $additional_names = [],
   $auth_basic = {},
   $ipv6 = false,
+  $logdir = '',
   $port = 80,
+  $root = '',
   $site_config = 'present'
   ){
 
-  validate_absolute_path($logdir)
-  validate_absolute_path($root)
+  if $activate == true {
+    $symlink_state = 'link'
+    $site_config_state = 'present'
+    validate_absolute_path($logdir)
+    validate_absolute_path($root)
+  } elsif $activate == false {
+    $symlink_state = 'absent'
+    $site_config_state = $site_config
+    if $site_config_state == 'present' {
+      validate_absolute_path($logdir)
+      validate_absolute_path($root)
+    }
+  }
+
   validate_array($additional_names)
   validate_bool($ipv6)
 
   $server_name = $name
 
   file { "/etc/nginx/sites-available/${server_name}":
-    ensure  => $site_config,
+    ensure  => $site_config_state,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
     content => template('nginx/static.conf.erb'),
     notify  => Service['nginx'],
     require => Package['nginx'],
-  }
-
-  if $activate == true {
-    $symlink_state = 'link'
-  } else {
-    $symlink_state = $activate
   }
 
   file { "/etc/nginx/sites-enabled/${server_name}":
