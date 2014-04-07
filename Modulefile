@@ -1,5 +1,5 @@
 name    'anl-nginx'
-version '0.3.1'
+version '0.3.2'
 source 'https://github.com/anl/puppet-nginx.git'
 author 'anl'
 license 'Apache License, Version 2.0'
